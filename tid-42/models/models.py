@@ -1,18 +1,30 @@
-# -*- coding: utf-8 -*-
+from odoo import models, fields, api
+import qrcode
+import base64
+import os
 
-# from odoo import models, fields, api
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
 
+    def generate_qrcode_image(self):
+        for info in self:
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(info.name)
+            qr.make(fit=True)
 
-# class tid-42(models.Model):
-#     _name = 'tid-42.tid-42'
-#     _description = 'tid-42.tid-42'
+            img = qr.make_image(fill_color="black", back_color="white")
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+            # Save the QR code image in the qrcodes folder inside static
+            image_path = os.path.join('Tasks','tid-42', 'static', 'qrcodes', f"{info.name}.png")
+            img.save(image_path)
+
+            # Read the image file and convert it to base64
+            with open(image_path, 'rb') as image_file:
+                info.qrcode_data = base64.b64encode(image_file.read())
+
+    qrcode_data = fields.Binary(string='QR Code Data', compute='generate_qrcode_image')
