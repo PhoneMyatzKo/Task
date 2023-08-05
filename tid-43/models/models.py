@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class ProductTemplate(models.Model):
@@ -6,32 +6,37 @@ class ProductTemplate(models.Model):
 
     # New computed fields
     cost_group = fields.Selection(
-        [('greater', 'Cost Greater or Equal Saleprice'),
-         ('less', 'Others')],
+        [('greater', 'Cost Greater or Equal Sale price'),
+         ('other', 'Others')],
         compute='_compute_cost_group',
         store=True,
         string='Cost Group',
     )
 
     cost_group_two = fields.Selection(
-        [('greater', 'Others'),
-         ('less', 'Cost Less than Saleprice')],
+        [('less', 'Cost Less than Sale price'),
+         ('other', 'Others')],
         compute='_compute_cost_group_two',
         store=True,
-        string='Cost Group',
+        string='Cost Group Two',
     )
 
-
+    @api.depends('standard_price', 'list_price')
     def _compute_cost_group(self):
         for product in self:
+            product.standard_price
+            product.list_price
             if product.standard_price >= product.list_price:
                 product.cost_group = 'greater'
             else:
-                product.cost_group = 'less'
+                product.cost_group = 'other'
 
+    @api.depends('standard_price', 'list_price')
     def _compute_cost_group_two(self):
         for product in self:
-            if product.standard_price >= product.list_price:
-                product.cost_group_two = 'greater'
-            else:
+            product.standard_price
+            product.list_price
+            if product.standard_price < product.list_price:
                 product.cost_group_two = 'less'
+            else:
+                product.cost_group_two = 'other'
