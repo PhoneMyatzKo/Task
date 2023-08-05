@@ -1,18 +1,37 @@
-# -*- coding: utf-8 -*-
-
-# from odoo import models, fields, api
+from odoo import fields, models
 
 
-# class tid-43(models.Model):
-#     _name = 'tid-43.tid-43'
-#     _description = 'tid-43.tid-43'
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    # New computed fields
+    cost_group = fields.Selection(
+        [('greater', 'Cost Greater or Equal Saleprice'),
+         ('less', 'Others')],
+        compute='_compute_cost_group',
+        store=True,
+        string='Cost Group',
+    )
+
+    cost_group_two = fields.Selection(
+        [('greater', 'Others'),
+         ('less', 'Cost Less than Saleprice')],
+        compute='_compute_cost_group_two',
+        store=True,
+        string='Cost Group',
+    )
+
+
+    def _compute_cost_group(self):
+        for product in self:
+            if product.standard_price >= product.list_price:
+                product.cost_group = 'greater'
+            else:
+                product.cost_group = 'less'
+
+    def _compute_cost_group_two(self):
+        for product in self:
+            if product.standard_price >= product.list_price:
+                product.cost_group_two = 'greater'
+            else:
+                product.cost_group_two = 'less'
