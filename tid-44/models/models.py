@@ -1,18 +1,20 @@
-# -*- coding: utf-8 -*-
+from odoo import fields, models, api
 
-# from odoo import models, fields, api
+class StockMoveInherit(models.Model):
+    _inherit = 'stock.move'
 
+    @api.onchange('location_id')
+    def _onchange_location_id(self):
+        if self.location_id:
+            products = self._get_products_in_location(self.location_id)
+            domain = [('id', 'in', products.ids)]
+            return {'domain': {'product_id': domain}}
 
-# class tid-44(models.Model):
-#     _name = 'tid-44.tid-44'
-#     _description = 'tid-44.tid-44'
+    def _get_products_in_location(self, location):
+        products = self.env['product.product']
+        quants = self.env['stock.quant'].search([('location_id', '=', location.id)])
+        for quant in quants:
+            if quant.product_id not in products:
+                products += quant.product_id
+        return products
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
