@@ -1,60 +1,13 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="tid-46.list">
-      <field name="name">tid-46 list</field>
-      <field name="model">tid-46.tid-46</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
--->
-
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="tid-46.action_window">
-      <field name="name">tid-46 window</field>
-      <field name="res_model">tid-46.tid-46</field>
-      <field name="view_mode">tree,form</field>
-    </record>
--->
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="tid-46.action_server">
-      <field name="name">tid-46 server</field>
-      <field name="model_id" ref="model_tid-46_tid-46"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
-
-    <!-- Top menu item -->
-<!--
-    <menuitem name="tid-46" id="tid-46.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="tid-46.menu_1" parent="tid-46.menu_root"/>
-    <menuitem name="Menu 2" id="tid-46.menu_2" parent="tid-46.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="tid-46.menu_1_list" parent="tid-46.menu_1"
-              action="tid-46.action_window"/>
-    <menuitem name="Server to list" id="tid-46" parent="tid-46.menu_2"
-              action="tid-46.action_server"/>
--->
-  </data>
+  <record id="viewcustom_employee" model="ir.ui.view">
+    <field name="name">viewcustom.employee</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='phone']" position="after">
+          <field name="join_date"  widget="date"/>
+          <field name="probation_end_date" widget="date"/>
+        </xpath>
+    </field>
+  </record>
 </odoo>
