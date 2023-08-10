@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
+from odoo import models, fields
 
-# from odoo import models, fields, api
+class MyInheritAccountInvoice(models.Model):
+    _inherit = 'account.move'
 
+    vehicle_no = fields.Char(string="Vehicle No")
 
-# class tid-48(models.Model):
-#     _name = 'tid-48.tid-48'
-#     _description = 'tid-48.tid-48'
+class MyInheritSaleOrder(models.Model):
+    _inherit = 'sale.order'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    vehicle_no = fields.Char(string="Vehicle No")
+
+    def _prepare_invoice(self):
+        res = super(MyInheritSaleOrder, self)._prepare_invoice()
+        res['vehicle_no'] = self.vehicle_no
+        return res
