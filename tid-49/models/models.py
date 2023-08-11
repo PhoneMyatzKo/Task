@@ -1,18 +1,18 @@
-# -*- coding: utf-8 -*-
+from odoo import models, fields, api
+from datetime import datetime
 
-# from odoo import models, fields, api
+class CustomHrEmployee(models.Model):
+    _inherit = 'hr.employee'
 
+    age = fields.Integer(string="Age", compute='_compute_age', store=True)
 
-# class tid-49(models.Model):
-#     _name = 'tid-49.tid-49'
-#     _description = 'tid-49.tid-49'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    @api.depends('birthday')
+    def _compute_age(self):
+        for employee in self:
+            if employee.birthday:
+                birth_date = fields.Datetime.from_string(employee.birthday)
+                today = fields.Date.today()
+                delta = today - birth_date.date()
+                employee.age = delta.days // 365
+            else:
+                employee.age = 0
