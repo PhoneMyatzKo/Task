@@ -22,7 +22,7 @@ class HrEmployee(models.Model):
         employees = self.env['hr.employee'].search([])
         today = fields.Date.today()
         for employee in employees:
-            if employee.probation_end_date and employee.probation_end_date <= today:
+            if employee.probation_end_date and employee.probation_end_date == today:
                 nametosent = {
                     'Ename': employee.name,
                     'email_from': self.env.company.email
