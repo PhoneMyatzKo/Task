@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="email_template_probation_end" model="mail.template">
+            <field name="name">Probation End Notification</field>
+            <field name="email_from">{{ctx['data']['email_from']}}</field>
+            <field name="subject">Probation End Notification</field>
+            <field name="model_id" ref="model_hr_employee"/>
+            <field name="body_html" type="html">
+                <div>
+                    <t t-set="data" t-value="ctx.get('data')"/>
+                    <p>Dear HR Manager,</p>
+                    <p>This is to inform you that the probation period for one of your employee <t t-out="data.get('Ename', '')"></t> has ended today.</p>
+                    <p>Please review the employee's performance and take necessary actions as needed.</p>
+                    <p>Thank you.</p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
