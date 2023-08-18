@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tid-44_tid-44,tid-44.tid-44,model_tid-44_tid-44,base.group_user,1,1,1,1
