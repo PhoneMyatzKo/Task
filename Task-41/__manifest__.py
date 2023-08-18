@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "tid-42",
+    'name': "tid-41",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
