@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
             img = qr.make_image(fill_color="black", back_color="white")
 
             # Save the QR code image in the qrcodes folder inside static
-            image_path = os.path.join('Tasks','tid-42', 'static', 'qrcodes', f"{info.name}.png")
+            image_path = os.path.join('Tasks','Task-42', 'static', 'qrcodes', f"{info.name}.png")
             img.save(image_path)
 
             # Read the image file and convert it to base64
