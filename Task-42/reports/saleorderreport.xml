@@ -1,12 +1,8 @@
 <odoo>
     <template id="report_saleorder_document_qrcode" inherit_id="sale.report_saleorder_document">
         <xpath expr="//div[@id='informations']/div[@class='col-auto col-3 mw-100 mb-2']" position="after">
-            <div class="row mt-4 mb-4">
-                <div class="col-auto col-3 mw-100 mb-2">
                     <strong>QR Code:</strong>
                     <img t-if="doc.qrcode_data" t-att-src="'data:image/png;base64,%s' % doc.qrcode_data.decode('utf-8')" style="max-width: 100px; max-height: 100px;"/>
-                </div>
-            </div>
         </xpath>
     </template>
 </odoo>
